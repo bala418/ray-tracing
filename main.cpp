@@ -28,32 +28,37 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 }
 
 hittable_list random_scene() {
-        hittable_list world;
+hittable_list world;
 
     auto ground_material = make_shared<lambertian>(color(0.2, 0.8, 0.2));
     world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
 
-    int numSpheres = 50;
-    double radius = 0.2;
-    double spacing = 0.2;
-    double spiralRadius = 4.0;
+    int numSpheres = 20;
 
     for (int i = 0; i < numSpheres; ++i) {
-        double angle = 0.1 * i;
-        double height = spacing * i;
-        double x = spiralRadius * cos(angle);
-        double z = spiralRadius * sin(angle) - 10.0;
-        double y = radius + height;
+        double radius = random_double(0.1, 0.5);
+        point3 center(random_double(-10, 10), radius, random_double(-10, 10));
 
-        point3 center(x, y, z);
+        auto choose_material = random_double();
+        shared_ptr<material> sphere_material;
 
-        if (i % 2 == 0) {
-            auto sphere_material = make_shared<lambertian>(color(0.8, 0.2, 0.2));
-            world.add(make_shared<sphere>(center, radius, sphere_material));
+        if (choose_material < 0.6) {
+            sphere_material = make_shared<lambertian>(color(
+                random_double(),
+                random_double(),
+                random_double()
+            ));
+        } else if (choose_material < 0.9) {
+            sphere_material = make_shared<metal>(color(
+                random_double(0.5, 1.0),
+                random_double(0.5, 1.0),
+                random_double(0.5, 1.0)
+            ), random_double(0.0, 0.5));
         } else {
-            auto sphere_material = make_shared<metal>(color(0.8, 0.8, 0.8), 0.2);
-            world.add(make_shared<sphere>(center, radius, sphere_material));
+            sphere_material = make_shared<dielectric>(random_double(1.1, 2.0));
         }
+
+        world.add(make_shared<sphere>(center, radius, sphere_material));
     }
 
     return world;
