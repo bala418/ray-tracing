@@ -152,3 +152,32 @@ hittable_list random_scene() {
 
     return world;
 }
+
+ hittable_list world;
+
+    auto ground_material = make_shared<lambertian>(color(0.2, 0.8, 0.2));
+    world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
+
+    int numSpheres = 10;
+    double radius = 0.2;
+    double spacing = 1.0;
+
+    for (int i = 0; i < numSpheres; ++i) {
+        for (int j = 0; j < numSpheres; ++j) {
+            double x = (i - numSpheres / 2.0) * spacing;
+            double z = (j - numSpheres / 2.0) * spacing;
+            double y = radius;
+
+            point3 center(x, y, -z);
+
+            if ((i + j) % 2 == 0) {
+                auto sphere_material = make_shared<metal>(color(0.8, 0.8, 0.8), 0.2);
+                world.add(make_shared<sphere>(center, radius, sphere_material));
+            } else {
+                auto sphere_material = make_shared<lambertian>(color(0.8, 0.2, 0.2));
+                world.add(make_shared<sphere>(center, radius, sphere_material));
+            }
+        }
+    }
+
+    return world;

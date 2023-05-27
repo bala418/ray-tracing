@@ -28,29 +28,30 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 }
 
 hittable_list random_scene() {
-    hittable_list world;
+        hittable_list world;
 
     auto ground_material = make_shared<lambertian>(color(0.2, 0.8, 0.2));
     world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
 
-    int numSpheres = 5;
-    double radius = 0.5;
-    double spacing = 1.5;
+    int numSpheres = 50;
+    double radius = 0.2;
+    double spacing = 0.2;
+    double spiralRadius = 4.0;
 
     for (int i = 0; i < numSpheres; ++i) {
-        for (int j = 0; j < numSpheres; ++j) {
-            double x = (i - (numSpheres - 1) / 2.0) * spacing;
-            double z = (j - (numSpheres - 1) / 2.0) * spacing;
-            double y = radius;
+        double angle = 0.1 * i;
+        double height = spacing * i;
+        double x = spiralRadius * cos(angle);
+        double z = spiralRadius * sin(angle) - 10.0;
+        double y = radius + height;
 
-            point3 center(x, y, -z);
+        point3 center(x, y, z);
 
-            auto sphere_material = make_shared<lambertian>(color(
-                static_cast<double>(i) / (numSpheres - 1),
-                static_cast<double>(j) / (numSpheres - 1),
-                0.5
-            ));
-
+        if (i % 2 == 0) {
+            auto sphere_material = make_shared<lambertian>(color(0.8, 0.2, 0.2));
+            world.add(make_shared<sphere>(center, radius, sphere_material));
+        } else {
+            auto sphere_material = make_shared<metal>(color(0.8, 0.8, 0.8), 0.2);
             world.add(make_shared<sphere>(center, radius, sphere_material));
         }
     }
