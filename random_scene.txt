@@ -1,0 +1,65 @@
+hittable_list random_scene() {
+    hittable_list world;
+
+    auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
+    world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
+
+    auto sphere_material = make_shared<metal>(color(0.8, 0.8, 0.8), 0.0);
+    world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, sphere_material));
+
+    return world;
+}
+
+hittable_list random_scene() {
+    hittable_list world;
+
+    auto ground_material = make_shared<lambertian>(color(0.2, 0.8, 0.2));
+    world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
+
+    auto sphere_material1 = make_shared<lambertian>(color(0.8, 0.2, 0.2));
+    world.add(make_shared<sphere>(point3(0, 0.5, -1), 0.5, sphere_material1));
+
+    auto sphere_material2 = make_shared<metal>(color(0.8, 0.8, 0.8), 0.0);
+    world.add(make_shared<sphere>(point3(0, 1, -3), 1.0, sphere_material2));
+
+    return world;
+}
+
+hittable_list random_scene() {
+    hittable_list world;
+
+    auto ground_material = make_shared<lambertian>(color(0.2, 0.8, 0.2));
+    world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
+
+    auto sphere_material1 = make_shared<lambertian>(color(0.8, 0.2, 0.2));
+    world.add(make_shared<sphere>(point3(-1.0, 0.5, -3), 0.5, sphere_material1));
+
+    auto sphere_material2 = make_shared<lambertian>(color(0.2, 0.2, 0.8));
+    world.add(make_shared<sphere>(point3(0, 0.5, -2), 0.5, sphere_material2));
+
+    auto sphere_material3 = make_shared<lambertian>(color(0.2, 0.8, 0.2));
+    world.add(make_shared<sphere>(point3(1.0, 0.5, -1), 0.5, sphere_material3));
+
+    return world;
+}
+
+hittable_list random_scene() {
+    hittable_list world;
+
+    auto ground_material = make_shared<lambertian>(color(0.2, 0.8, 0.2));
+    world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
+
+    auto sphere_material1 = make_shared<lambertian>(color(0.8, 0.2, 0.2));
+    world.add(make_shared<sphere>(point3(-1, 0.5, -3), 0.5, sphere_material1));
+
+    auto sphere_material2 = make_shared<metal>(color(0.8, 0.8, 0.8), 0.0);
+    world.add(make_shared<sphere>(point3(1, 0.5, -3), 0.5, sphere_material2));
+
+    auto sphere_material3 = make_shared<dielectric>(1.5);
+    world.add(make_shared<sphere>(point3(-1, 0.5, -1), 0.5, sphere_material3));
+
+    auto sphere_material4 = make_shared<dielectric>(1.5);
+    world.add(make_shared<sphere>(point3(1, 0.5, -1), 0.5, sphere_material4));
+
+    return world;
+}
