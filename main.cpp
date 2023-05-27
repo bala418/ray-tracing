@@ -33,17 +33,27 @@ hittable_list random_scene() {
     auto ground_material = make_shared<lambertian>(color(0.2, 0.8, 0.2));
     world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
 
-    auto sphere_material1 = make_shared<lambertian>(color(0.8, 0.2, 0.2));
-    world.add(make_shared<sphere>(point3(-1, 0.5, -3), 0.5, sphere_material1));
+    int numSpheres = 5;
+    double radius = 0.5;
+    double spacing = 1.5;
 
-    auto sphere_material2 = make_shared<metal>(color(0.8, 0.8, 0.8), 0.0);
-    world.add(make_shared<sphere>(point3(1, 0.5, -3), 0.5, sphere_material2));
+    for (int i = 0; i < numSpheres; ++i) {
+        for (int j = 0; j < numSpheres; ++j) {
+            double x = (i - (numSpheres - 1) / 2.0) * spacing;
+            double z = (j - (numSpheres - 1) / 2.0) * spacing;
+            double y = radius;
 
-    auto sphere_material3 = make_shared<dielectric>(1.5);
-    world.add(make_shared<sphere>(point3(-1, 0.5, -1), 0.5, sphere_material3));
+            point3 center(x, y, -z);
 
-    auto sphere_material4 = make_shared<metal>(color(0.3, 0.3, 0.3), 0.0);
-    world.add(make_shared<sphere>(point3(1, 0.5, -1), 0.5, sphere_material4));
+            auto sphere_material = make_shared<lambertian>(color(
+                static_cast<double>(i) / (numSpheres - 1),
+                static_cast<double>(j) / (numSpheres - 1),
+                0.5
+            ));
+
+            world.add(make_shared<sphere>(center, radius, sphere_material));
+        }
+    }
 
     return world;
 }
